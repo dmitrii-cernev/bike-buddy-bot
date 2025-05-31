@@ -1,0 +1,15 @@
+services:
+  bike-bot:
+    build: .
+    container_name: bike-activity-bot
+    restart: unless-stopped
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+    volumes:
+      - ./data:/app/data
+    # Optional: Add health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sqlite3; sqlite3.connect('/app/data/bike_activities.db').close()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
